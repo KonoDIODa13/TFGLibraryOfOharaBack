@@ -4,7 +4,7 @@ import com.example.tfglibraryofohara.Models.Autor;
 
 public record AutorDTO(String nombre, String apellidos, int edad) {
 
-    Autor DTOtoModel() {
+   public Autor DTOtoModel() {
         Autor autor = new Autor();
         autor.setNombre(nombre);
         autor.setApellidos(apellidos);

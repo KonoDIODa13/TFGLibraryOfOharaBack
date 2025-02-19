@@ -17,21 +17,20 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/autor")
-@Tag(name = "Autores", description = "Controlador para todas las acciones de autores")
+@Tag(name = "Autores", description = "Controlador para todas las acciones de autores.")
 public class AutorController {
     @Autowired
     private AutorServicio autorServicio;
 
-
     @GetMapping("/todos")
-    @Operation(summary = "Listar todos los Autores (si hay)")
+    @Operation(summary = "Listar todos los Autores (si hay).")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Mostrará la lista de Autores",
+                    description = "Mostrará la lista de Autores.",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = Autor.class)))
             ),
             @ApiResponse(responseCode = "204",
-                    description = "No hay Autores en la bd",
+                    description = "No hay Autores en la bd.",
                     content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<?> listarTodos() {
@@ -42,24 +41,38 @@ public class AutorController {
     }
 
     @GetMapping("/{idAutor}/mostrar")
-    @Operation(summary = "Buscar un Autor por su ID (si hay)")
+    @Operation(summary = "Buscar un Autor por su ID (si hay).")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Mostrará un Autor cuyo id sea ese",
+                    description = "Mostrará un Autor cuyo id sea ese.",
                     content = @Content(schema = @Schema(implementation = Autor.class))
             ),
             @ApiResponse(responseCode = "204",
-                    description = "No existe un autor con dicho ID",
+                    description = "No existe un autor con dicho ID.",
                     content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<?> buscarXID(@PathVariable int idAutor) {
         return autorServicio.buscarXID(idAutor).isPresent() ?
                 new ResponseEntity<>(autorServicio.buscarXID(idAutor).get(), HttpStatus.OK) :
-                new ResponseEntity<>("No existe un autor con dicho ID", HttpStatus.NO_CONTENT);
+                new ResponseEntity<>("No existe un autor con dicho ID.", HttpStatus.NO_CONTENT);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Añadirá correctamente el Autor con los datos pasados.",
+                    content = @Content(schema = @Schema(implementation = Autor.class))
+            ),
+            @ApiResponse(responseCode = "409",
+                    description = "Dicho autor ya existe en la bd.",
+                    content = @Content(schema = @Schema(implementation = String.class)))
+    })
     @PostMapping("/registrar")
+    @Operation(summary = "Añadir un nuevo Autor")
     public ResponseEntity<?> registrar(@RequestBody AutorDTO autorDTO) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        Autor autor = autorServicio.insertar(autorDTO);
+        return autor != null ?
+                new ResponseEntity<>(autor, HttpStatus.OK) :
+                new ResponseEntity<>("Dicho autor ya existe en la bd.", HttpStatus.CONFLICT)
+                ;
     }
 }
