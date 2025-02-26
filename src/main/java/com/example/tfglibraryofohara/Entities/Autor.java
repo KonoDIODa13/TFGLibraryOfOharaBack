@@ -1,4 +1,4 @@
-package com.example.tfglibraryofohara.Models;
+package com.example.tfglibraryofohara.Entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
@@ -20,7 +20,6 @@ CREATE TABLE Autor
     PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
 */
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -82,5 +81,15 @@ public class Autor {
 
     public void setLibros(List<Libro> libros) {
         this.libros = libros;
+    }
+
+    @Override
+    public String toString() {
+        return "Autor{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", edad=" + edad +
+                '}';
     }
 }

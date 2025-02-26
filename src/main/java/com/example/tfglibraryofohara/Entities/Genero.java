@@ -1,4 +1,4 @@
-package com.example.tfglibraryofohara.Models;
+package com.example.tfglibraryofohara.Entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
@@ -35,4 +35,28 @@ public class Genero {
     @OneToMany(mappedBy = "genero", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Libro> libros;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public List<Libro> getLibros() {
+        return libros;
+    }
+
+    public void setLibros(List<Libro> libros) {
+        this.libros = libros;
+    }
 }

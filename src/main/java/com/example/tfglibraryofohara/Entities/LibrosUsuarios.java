@@ -1,10 +1,12 @@
-package com.example.tfglibraryofohara.Models;
+package com.example.tfglibraryofohara.Entities;
 
 
+import com.example.tfglibraryofohara.Entities.Enums.Estado;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 /*
 -- -----------------------------------------------------
@@ -42,4 +44,50 @@ public class LibrosUsuarios {
     @JoinColumn(name = "idLibro", referencedColumnName = "id")
     @JsonBackReference
     private Libro libro;
+
+    @Column(name = "fecha_inicio")
+    private LocalDate fechaInicio = LocalDate.now();
+
+    @Column(name = "estado")
+    private Estado estado = Estado.SIN_EMPEZAR;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Libro getLibro() {
+        return libro;
+    }
+
+    public void setLibro(Libro libro) {
+        this.libro = libro;
+    }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
 }

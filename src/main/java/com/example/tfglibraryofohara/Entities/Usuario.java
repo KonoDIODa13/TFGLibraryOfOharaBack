@@ -1,4 +1,4 @@
-package com.example.tfglibraryofohara.Models;
+package com.example.tfglibraryofohara.Entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
@@ -26,7 +26,7 @@ CREATE TABLE Usuario
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Uuario")
+@Table(name = "Usuario")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,11 +43,58 @@ public class Usuario {
     private String contrasenna;
 
     @Column(name = "rol")
-    private Boolean rol;
+    private String rol= "USER";
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<LibrosUsuarios> librosUsuarios;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getContrasenna() {
+        return contrasenna;
+    }
+
+    public void setContrasenna(String contrasenna) {
+        this.contrasenna = contrasenna;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public List<LibrosUsuarios> getLibrosUsuarios() {
+        return librosUsuarios;
+    }
+
+    public void setLibrosUsuarios(List<LibrosUsuarios> librosUsuarios) {
+        this.librosUsuarios = librosUsuarios;
+    }
 }
 

@@ -1,4 +1,4 @@
-package com.example.tfglibraryofohara.Models;
+package com.example.tfglibraryofohara.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -20,11 +20,11 @@ CREATE TABLE Libro
     sinopsis          VARCHAR(1000) DEFAULT NULL,
     fecha_publicacion DATE          DEFAULT NULL,
     portada           VARCHAR(500)  DEFAULT NULL,
-    autor             INT NOT NULL,
-    genero            INT NOT NULL,
+    autorDTO             INT NOT NULL,
+    generoDTO            INT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (autor) REFERENCES Autor (id),
-    FOREIGN KEY (genero) REFERENCES Genero (id)
+    FOREIGN KEY (autorDTO) REFERENCES Autor (id),
+    FOREIGN KEY (generoDTO) REFERENCES Genero (id)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
 */
 @Data
@@ -63,4 +63,68 @@ public class Libro {
     @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<LibrosUsuarios> librosUsuarios;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getSinopsis() {
+        return sinopsis;
+    }
+
+    public void setSinopsis(String sinopsis) {
+        this.sinopsis = sinopsis;
+    }
+
+    public LocalDate getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(LocalDate fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
+    }
+
+    public String getPortada() {
+        return portada;
+    }
+
+    public void setPortada(String portada) {
+        this.portada = portada;
+    }
+
+    public Autor getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Autor autor) {
+        this.autor = autor;
+    }
+
+    public Genero getGenero() {
+        return genero;
+    }
+
+    public void setGenero(Genero genero) {
+        this.genero = genero;
+    }
+
+    public List<LibrosUsuarios> getLibrosUsuarios() {
+        return librosUsuarios;
+    }
+
+    public void setLibrosUsuarios(List<LibrosUsuarios> librosUsuarios) {
+        this.librosUsuarios = librosUsuarios;
+    }
 }

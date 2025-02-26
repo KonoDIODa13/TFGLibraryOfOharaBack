@@ -12,12 +12,12 @@ Library_of_ohara;
 -- -----------------------------------------------------
 CREATE TABLE Usuario
 (
-    id         INT NOT NULL AUTO_INCREMENT,
-    nombre     VARCHAR(30)  DEFAULT NULL,
-    apellidos  VARCHAR(50)  DEFAULT NULL,
-    gmail      VARCHAR(50)  DEFAULT NULL,
+    id          INT NOT NULL AUTO_INCREMENT,
+    nombre      VARCHAR(30)  DEFAULT NULL,
+    apellidos   VARCHAR(50)  DEFAULT NULL,
+    gmail       VARCHAR(50)  DEFAULT NULL,
     contrasenna VARCHAR(500) DEFAULT NULL,
-    rol        BOOLEAN      DEFAULT FALSE,
+    rol         VARCHAR(10)  DEFAULT FALSE,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
 
@@ -69,9 +69,11 @@ CREATE TABLE Libro
 
 CREATE TABLE Libros_Usuarios
 (
-    id        INT NOT NULL AUTO_INCREMENT,
-    idUsuario INT NOT NULL,
-    idLibro   INT NOT NULL,
+    id           INT NOT NULL AUTO_INCREMENT,
+    idUsuario    INT NOT NULL,
+    idLibro      INT NOT NULL,
+    fecha_inicio DATE        DEFAULT NULL,
+    estado       VARCHAR(20) DEFAULT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (idUsuario) REFERENCES Usuario (id),
     FOREIGN KEY (idLibro) REFERENCES Libro (id)
