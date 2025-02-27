@@ -30,6 +30,7 @@ CREATE TABLE Libro
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "Libro")
 public class Libro {

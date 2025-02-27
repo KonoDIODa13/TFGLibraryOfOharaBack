@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,8 +96,8 @@ public class LibroController {
                     content = @Content(schema = @Schema(implementation = String.class))
             )
     })
-    public ResponseEntity<?> buscarXFechaPublicacionDesde(@PathVariable LocalDate fecha) {
-        List<Libro> listaLibros = libroService.filtrarX("desde", fecha);
+    public ResponseEntity<?> buscarXFechaPublicacionDesde(@PathVariable String fecha) {
+        List<Libro> listaLibros = libroService.filtrarX("desde", LocalDate.parse(fecha));
         return !listaLibros.isEmpty() ?
                 new ResponseEntity<>(listaLibros, HttpStatus.OK) :
                 new ResponseEntity<>("No hay Libros que hayan sido publicados después de la fecha indicada.", HttpStatus.NOT_FOUND);
@@ -114,11 +115,34 @@ public class LibroController {
                     content = @Content(schema = @Schema(implementation = String.class))
             )
     })
-    public ResponseEntity<?> buscarXFechaPublicacionHasta(@PathVariable LocalDate fecha) {
-        List<Libro> listaLibros = libroService.filtrarX("hasta", fecha);
+    public ResponseEntity<?> buscarXFechaPublicacionHasta(@PathVariable String fecha) {
+        List<Libro> listaLibros = libroService.filtrarX("hasta", LocalDate.parse(fecha));
+        System.out.println(listaLibros.get(0).getAutor().getNombre());
         return !listaLibros.isEmpty() ?
                 new ResponseEntity<>(listaLibros, HttpStatus.OK) :
                 new ResponseEntity<>("No hay Libros que hayan sido publicados antes de la fecha indicada.", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/filtrar/entre/{fecha1},{fecha2}")
+    @Operation(summary = "Listar los Libros que se hayan sido publicados entre las dos fechas (si hay).")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Mostrará la lista de Libros que hayan sido publicados entre las fechas indicadas",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Libro.class)))
+            ),
+            @ApiResponse(responseCode = "404",
+                    description = "No hay Libros que hayan sido publicados entre las fecha indicadas.",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            )
+    })
+    public ResponseEntity<?> buscarXFechaPublicacionEntre(@PathVariable String fecha1, @PathVariable String fecha2) {
+        List<LocalDate> localDates = new ArrayList<>();
+        localDates.add(LocalDate.parse(fecha1));
+        localDates.add(LocalDate.parse(fecha2));
+        List<Libro> listaLibros = libroService.filtrarX("entre", localDates);
+        return !listaLibros.isEmpty() ?
+                new ResponseEntity<>(listaLibros, HttpStatus.OK) :
+                new ResponseEntity<>("No hay Libros que hayan sido publicados entre las fecha indicadas.", HttpStatus.NOT_FOUND);
     }
 
 

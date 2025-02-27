@@ -83,6 +83,24 @@ public class LibroService {
                         ).toList();
             }
 
+            case "entre" -> {
+                List<LocalDate> localDates = (ArrayList<LocalDate>) filtro;
+                LocalDate fecha1 = localDates.get(0);
+                LocalDate fecha2 = localDates.get(1);
+                LocalDate fechaMenor, fechaMayor;
+                if (fecha1.isBefore(fecha2)) {
+                    fechaMenor = fecha1;
+                    fechaMayor = fecha2;
+                } else {
+                    fechaMenor = fecha2;
+                    fechaMayor = fecha1;
+                }
+                listaFiltrada = listarTodos().stream()
+                        .filter(libro -> libro.getFechaPublicacion().isAfter(fechaMenor)
+                                && libro.getFechaPublicacion().isBefore(fechaMayor)
+                        ).toList();
+            }
+
         }
         return listaFiltrada;
     }

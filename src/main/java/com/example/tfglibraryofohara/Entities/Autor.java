@@ -22,6 +22,7 @@ CREATE TABLE Autor
 */
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "Autor")
 public class Autor {

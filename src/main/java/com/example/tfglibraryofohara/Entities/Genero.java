@@ -21,6 +21,7 @@ CREATE TABLE Genero
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "Genero")
 public class Genero {
