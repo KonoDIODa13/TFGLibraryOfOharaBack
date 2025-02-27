@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -41,6 +43,84 @@ public class LibroController {
                 new ResponseEntity<>(libroService.listarTodos(), HttpStatus.OK) :
                 new ResponseEntity<>("No hay Libros en la bd.", HttpStatus.NOT_FOUND);
     }
+
+
+    @GetMapping("/filtrar/genero/{genero}")
+    @Operation(summary = "Listar los Libros mediante el Género puesto por parámetro (si hay).")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Mostrará la lista de Libros que pertenezcan a dicho Género.",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Libro.class)))
+            ),
+            @ApiResponse(responseCode = "404",
+                    description = "No hay Libros pertenecientes a dicho Género.",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            )
+    })
+    public ResponseEntity<?> buscarXGenero(@PathVariable String genero) {
+        List<Libro> listaLibros = libroService.filtrarX("genero", genero);
+        return !listaLibros.isEmpty() ?
+                new ResponseEntity<>(listaLibros, HttpStatus.OK) :
+                new ResponseEntity<>("No hay Libros pertenecientes a dicho Género.", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/filtrar/autor/{autor}")
+    @Operation(summary = "Listar los Libros mediante el Autor puesto por parámetro (si hay).")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Mostrará la lista de Libros que pertenezcan a dicho Autor.",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Libro.class)))
+            ),
+            @ApiResponse(responseCode = "404",
+                    description = "No hay Libros pertenecientes a dicho Autor.",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            )
+    })
+    public ResponseEntity<?> buscarXAutor(@PathVariable String autor) {
+        List<Libro> listaLibros = libroService.filtrarX("autor", autor);
+        return !listaLibros.isEmpty() ?
+                new ResponseEntity<>(listaLibros, HttpStatus.OK) :
+                new ResponseEntity<>("No hay Libros pertenecientes a dicho Autor.", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/filtrar/desde/{fecha}")
+    @Operation(summary = "Listar los Libros que se hayan sido publicados después de la fecha puesta por parámetro (si hay).")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Mostrará la lista de Libros que hayan sido publicados después de la fecha indicada",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Libro.class)))
+            ),
+            @ApiResponse(responseCode = "404",
+                    description = "No hay Libros que hayan sido publicados después de la fecha indicada.",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            )
+    })
+    public ResponseEntity<?> buscarXFechaPublicacionDesde(@PathVariable LocalDate fecha) {
+        List<Libro> listaLibros = libroService.filtrarX("desde", fecha);
+        return !listaLibros.isEmpty() ?
+                new ResponseEntity<>(listaLibros, HttpStatus.OK) :
+                new ResponseEntity<>("No hay Libros que hayan sido publicados después de la fecha indicada.", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/filtrar/hasta/{fecha}")
+    @Operation(summary = "Listar los Libros que se hayan sido publicados antes de la fecha puesta por parámetro (si hay).")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Mostrará la lista de Libros que hayan sido publicados antes de la fecha indicada",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Libro.class)))
+            ),
+            @ApiResponse(responseCode = "404",
+                    description = "No hay Libros que hayan sido publicados antes de la fecha inidicada.",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            )
+    })
+    public ResponseEntity<?> buscarXFechaPublicacionHasta(@PathVariable LocalDate fecha) {
+        List<Libro> listaLibros = libroService.filtrarX("hasta", fecha);
+        return !listaLibros.isEmpty() ?
+                new ResponseEntity<>(listaLibros, HttpStatus.OK) :
+                new ResponseEntity<>("No hay Libros que hayan sido publicados antes de la fecha indicada.", HttpStatus.NOT_FOUND);
+    }
+
 
     @GetMapping("/{idLibro}")
     @Operation(summary = "Buscar un Libros por su ID (si hay).")
