@@ -33,10 +33,10 @@ public class AutorServicio {
 
     public boolean modificar(Autor autor, AutorDTO autorDTO) {
         boolean modificado = false;
-        if (!autor.getNombre().equalsIgnoreCase(autorDTO.nombre())) {
-            autor.setNombre(autorDTO.nombre());
-            autor.setApellidos(autorDTO.apellidos());
-            autor.setEdad(autorDTO.edad());
+        if (!autor.getNombre().equalsIgnoreCase(autorDTO.getNombre())) {
+            autor.setNombre(autorDTO.getNombre());
+            autor.setApellidos(autorDTO.getApellidos());
+            autor.setEdad(autorDTO.getEdad());
             modificado = true;
             save(autor);
         }
@@ -66,9 +66,9 @@ public class AutorServicio {
 
     private boolean comprobar(AutorDTO autorDTO) {
         boolean existe = false;
-        Autor optAutor = listarTodos().stream().filter(autor -> autor.getNombre().equalsIgnoreCase(autorDTO.nombre()) &&
-                autor.getApellidos().equalsIgnoreCase(autorDTO.apellidos()) &&
-                autor.getEdad() == autorDTO.edad()).findFirst().orElse(null);
+        Autor optAutor = listarTodos().stream().filter(autor -> autor.getNombre().equalsIgnoreCase(autorDTO.getNombre()) &&
+                autor.getApellidos().equalsIgnoreCase(autorDTO.getNombre()) &&
+                autor.getEdad() == autorDTO.getEdad()).findFirst().orElse(null);
         if (optAutor != null) {
             existe = true;
         }

@@ -1,8 +1,18 @@
 package com.example.tfglibraryofohara.DTOS;
 
 import com.example.tfglibraryofohara.Entities.Autor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record AutorDTO(String nombre, String apellidos, int edad) {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public final class AutorDTO {
+    private String nombre;
+    private String apellidos;
+    private int edad;
+
 
     public Autor DTOtoModel() {
         Autor autor = new Autor();
@@ -15,4 +25,5 @@ public record AutorDTO(String nombre, String apellidos, int edad) {
     public AutorDTO ModeltoDTO(Autor autor) {
         return new AutorDTO(autor.getNombre(), autor.getApellidos(), autor.getEdad());
     }
+
 }

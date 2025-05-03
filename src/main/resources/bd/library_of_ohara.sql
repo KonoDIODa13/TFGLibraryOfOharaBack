@@ -70,12 +70,12 @@ CREATE TABLE Libro
 CREATE TABLE Libros_Usuarios
 (
     id           INT NOT NULL AUTO_INCREMENT,
-    idUsuario    INT NOT NULL,
-    idLibro      INT NOT NULL,
+    id_usuario    INT NOT NULL,
+    id_libro      INT NOT NULL,
     fecha_inicio DATE        DEFAULT NULL,
-    estado       VARCHAR(20) DEFAULT NULL,
+    estado       VARCHAR(20) DEFAULT "sin empezar",
     PRIMARY KEY (id),
-    FOREIGN KEY (idUsuario) REFERENCES Usuario (id),
-    FOREIGN KEY (idLibro) REFERENCES Libro (id)
+    FOREIGN KEY (id_usuario) REFERENCES Usuario (id),
+    FOREIGN KEY (id_libro) REFERENCES Libro (id)
 
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;

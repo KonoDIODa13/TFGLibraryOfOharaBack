@@ -107,8 +107,8 @@ public class LibroService {
 
     public Libro insertar(LibroDTO libroDTO) {
         Libro libro = null;
-        Autor autor = comprobarAutor(libroDTO.idAutor());
-        Genero genero = comprobarGenero(libroDTO.idGenero());
+        Autor autor = comprobarAutor(libroDTO.getIdAutor());
+        Genero genero = comprobarGenero(libroDTO.getIdGenero());
         if (!comprobar(libroDTO) && autor != null && genero != null) {
             libro = libroDTO.DTOtoModel();
             libro.setAutor(autor);
@@ -120,13 +120,13 @@ public class LibroService {
 
     public boolean modificar(Libro libro, LibroDTO libroDTO) {
         boolean modificado = false;
-        Autor autor = comprobarAutor(libroDTO.idAutor());
-        Genero genero = comprobarGenero(libroDTO.idGenero());
-        if (!libro.getTitulo().equalsIgnoreCase(libroDTO.titulo()) && autor != null && genero != null) {
-            libro.setTitulo(libroDTO.titulo());
-            libro.setSinopsis(libroDTO.sinopsis());
-            libro.setFechaPublicacion(libroDTO.fechaPublicacion());
-            libro.setPortada(libroDTO.portada());
+        Autor autor = comprobarAutor(libroDTO.getIdAutor());
+        Genero genero = comprobarGenero(libroDTO.getIdGenero());
+        if (!libro.getTitulo().equalsIgnoreCase(libroDTO.getTitulo()) && autor != null && genero != null) {
+            libro.setTitulo(libroDTO.getTitulo());
+            libro.setSinopsis(libroDTO.getSinopsis());
+            libro.setFechaPublicacion(libroDTO.getFechaPublicacion());
+            libro.setPortada(libroDTO.getPortada());
             libro.setAutor(autor);
             libro.setGenero(genero);
             modificado = true;
@@ -157,7 +157,7 @@ public class LibroService {
         boolean existe = false;
         Libro optLibro = listarTodos().stream()
                 .filter(libro ->
-                        libro.getTitulo().equalsIgnoreCase(libroDTO.titulo()))
+                        libro.getTitulo().equalsIgnoreCase(libroDTO.getTitulo()))
                 .findFirst().orElse(null);
         if (optLibro != null) {
             existe = true;

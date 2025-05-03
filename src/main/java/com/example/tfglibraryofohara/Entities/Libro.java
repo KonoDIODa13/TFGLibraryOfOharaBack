@@ -1,6 +1,8 @@
 package com.example.tfglibraryofohara.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -30,7 +32,7 @@ CREATE TABLE Libro
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"autor", "genero", "librosUsuarios"})
 @Entity
 @Table(name = "Libro")
 public class Libro {
@@ -53,79 +55,15 @@ public class Libro {
 
     @ManyToOne
     @JoinColumn(name = "autor", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonIgnoreProperties("libros")
     private Autor autor;
 
     @ManyToOne
     @JoinColumn(name = "genero", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonIgnoreProperties("libros")
     private Genero genero;
 
-    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<LibrosUsuarios> librosUsuarios;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getSinopsis() {
-        return sinopsis;
-    }
-
-    public void setSinopsis(String sinopsis) {
-        this.sinopsis = sinopsis;
-    }
-
-    public LocalDate getFechaPublicacion() {
-        return fechaPublicacion;
-    }
-
-    public void setFechaPublicacion(LocalDate fechaPublicacion) {
-        this.fechaPublicacion = fechaPublicacion;
-    }
-
-    public String getPortada() {
-        return portada;
-    }
-
-    public void setPortada(String portada) {
-        this.portada = portada;
-    }
-
-    public Autor getAutor() {
-        return autor;
-    }
-
-    public void setAutor(Autor autor) {
-        this.autor = autor;
-    }
-
-    public Genero getGenero() {
-        return genero;
-    }
-
-    public void setGenero(Genero genero) {
-        this.genero = genero;
-    }
-
-    public List<LibrosUsuarios> getLibrosUsuarios() {
-        return librosUsuarios;
-    }
-
-    public void setLibrosUsuarios(List<LibrosUsuarios> librosUsuarios) {
-        this.librosUsuarios = librosUsuarios;
-    }
 }

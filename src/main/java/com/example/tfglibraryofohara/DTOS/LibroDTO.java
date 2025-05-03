@@ -1,12 +1,24 @@
 package com.example.tfglibraryofohara.DTOS;
 
 import com.example.tfglibraryofohara.Entities.Libro;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-public record LibroDTO(String titulo, String sinopsis, LocalDate fechaPublicacion, String portada
-        , int idAutor, int idGenero
-) {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class LibroDTO {
+    private String titulo;
+    private String sinopsis;
+    private LocalDate fechaPublicacion;
+    private String portada;
+    private int idAutor;
+    private int idGenero;
+
+
     public Libro DTOtoModel() {
         Libro libro = new Libro();
         libro.setTitulo(titulo);

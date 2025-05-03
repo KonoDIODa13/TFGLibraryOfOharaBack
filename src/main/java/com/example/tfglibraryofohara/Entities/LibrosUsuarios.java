@@ -3,6 +3,7 @@ package com.example.tfglibraryofohara.Entities;
 
 import com.example.tfglibraryofohara.Entities.Enums.Estado;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,9 +25,9 @@ CREATE TABLE Libros_Usuarios
 
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
  */
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
 @Table(name = "Libros_Usuarios")
 public class LibrosUsuarios {
@@ -35,59 +36,20 @@ public class LibrosUsuarios {
     @Column(name = "id")
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "idUsuario", referencedColumnName = "id")
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
+    @JsonIgnoreProperties({"librosUsuarios"})
     private Usuario usuario;
 
-    @ManyToOne
-    @JoinColumn(name = "idLibro", referencedColumnName = "id")
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_libro", referencedColumnName = "id")
+    @JsonIgnoreProperties({"librosUsuarios"})
     private Libro libro;
 
     @Column(name = "fecha_inicio")
     private LocalDate fechaInicio = LocalDate.now();
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado")
     private Estado estado = Estado.SIN_EMPEZAR;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Libro getLibro() {
-        return libro;
-    }
-
-    public void setLibro(Libro libro) {
-        this.libro = libro;
-    }
-
-    public LocalDate getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(LocalDate fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }
 }

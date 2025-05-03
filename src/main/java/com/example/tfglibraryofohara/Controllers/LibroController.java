@@ -150,18 +150,18 @@ public class LibroController {
     @Operation(summary = "Buscar un Libros por su ID (si hay).")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Mostrará un Libros cuyo id sea ese.",
+                    description = "Mostrará un Libro cuyo id sea ese.",
                     content = @Content(schema = @Schema(implementation = Libro.class))
             ),
             @ApiResponse(responseCode = "404",
-                    description = "No existe un Libros con dicho ID.",
+                    description = "No existe un Libro con dicho ID.",
                     content = @Content(schema = @Schema(implementation = String.class))
             )
     })
     public ResponseEntity<?> buscarXID(@PathVariable int idLibro) {
         return libroService.buscarXID(idLibro).isPresent() ?
                 new ResponseEntity<>(libroService.buscarXID(idLibro).get(), HttpStatus.OK) :
-                new ResponseEntity<>("No existe un Género con dicho ID.", HttpStatus.NOT_FOUND);
+                new ResponseEntity<>("No existe un Libro con dicho ID.", HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/registrar")
@@ -172,21 +172,21 @@ public class LibroController {
                     content = @Content(schema = @Schema(implementation = Libro.class))
             ),
             @ApiResponse(responseCode = "409",
-                    description = "Dicho Género ya existe en la bd.",
+                    description = "Dicho Libro ya existe en la bd.",
                     content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<?> registrar(@RequestBody LibroDTO libroDTO) {
         Libro libro = libroService.insertar(libroDTO);
         return libro != null ?
                 new ResponseEntity<>(libro, HttpStatus.OK) :
-                new ResponseEntity<>("Dicho Libros ya existe en la bd.", HttpStatus.CONFLICT);
+                new ResponseEntity<>("Dicho Libro ya existe en la bd.", HttpStatus.CONFLICT);
     }
 
     @PutMapping("/{idLibro}/modificar")
     @Operation(summary = "Modificará el Libros especificado por ID (si hay).")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Modificará correctamente el Libros y lo mostrará mostrará.",
+                    description = "Modificará correctamente el Libros y lo mostrará.",
                     content = @Content(schema = @Schema(implementation = Libro.class))
             ),
             @ApiResponse(responseCode = "304",

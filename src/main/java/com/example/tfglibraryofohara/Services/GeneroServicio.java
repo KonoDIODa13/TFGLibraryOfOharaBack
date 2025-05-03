@@ -33,8 +33,8 @@ public class GeneroServicio {
 
     public boolean modificar(Genero genero, GeneroDTO generoDTO) {
         boolean modificado = false;
-        if (!genero.getGenero().equalsIgnoreCase(generoDTO.genero())) {
-            genero.setGenero(generoDTO.genero());
+        if (!genero.getGenero().equalsIgnoreCase(generoDTO.getGenero())) {
+            genero.setGenero(generoDTO.getGenero());
             modificado = true;
         }
         return modificado;
@@ -63,7 +63,7 @@ public class GeneroServicio {
         boolean existe = false;
         Genero optGenero = listarTodos().stream()
                 .filter(genero ->
-                        genero.getGenero().equalsIgnoreCase(generoDTO.genero()))
+                        genero.getGenero().equalsIgnoreCase(generoDTO.getGenero()))
                 .findFirst().orElse(null);
         if (optGenero != null) {
             existe = true;

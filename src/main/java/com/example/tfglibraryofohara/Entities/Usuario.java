@@ -1,5 +1,6 @@
 package com.example.tfglibraryofohara.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -23,8 +24,8 @@ CREATE TABLE Usuario
 */
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"librosUsuarios"})
 @Entity
 @Table(name = "Usuario")
 public class Usuario {
@@ -39,62 +40,20 @@ public class Usuario {
     @Column(name = "apellidos")
     private String apellidos;
 
+    @Column(name = "gmail")
+    private String gmail;
+
     @Column(name = "contrasenna")
     private String contrasenna;
 
     @Column(name = "rol")
-    private String rol= "USER";
+    private String rol = "USER";
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<LibrosUsuarios> librosUsuarios;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-
-    public String getContrasenna() {
-        return contrasenna;
-    }
-
-    public void setContrasenna(String contrasenna) {
-        this.contrasenna = contrasenna;
-    }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
-    public List<LibrosUsuarios> getLibrosUsuarios() {
-        return librosUsuarios;
-    }
-
-    public void setLibrosUsuarios(List<LibrosUsuarios> librosUsuarios) {
-        this.librosUsuarios = librosUsuarios;
-    }
 }
+
+
+
 

@@ -1,4 +1,4 @@
-package com.example.tfglibraryofohara.Swagger;
+package com.example.tfglibraryofohara.Configs;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -22,9 +22,9 @@ public class SwaggerConfig {
                                 .name("Jaime González Bravo")
                                 .email("jaime.gonbra@educa.jcyl.es")
                                 .url("LibraryOfOharaAPI"))
-                       /* .version("1.0")).addSecurityItem(new SecurityRequirement().addList("JavaInUseSecurityScheme"))
+                        .version("1.0")).addSecurityItem(new SecurityRequirement().addList("JavaInUseSecurityScheme"))
                 .components(new Components().addSecuritySchemes("JavaInUseSecurityScheme", new SecurityScheme().name("JavaInUseSecurityScheme")
-                        .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"))*/
+                        .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"))
                 );
 
     }
