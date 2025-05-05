@@ -3,6 +3,7 @@ package com.example.tfglibraryofohara.Security;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
@@ -10,7 +11,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,7 +27,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-	/*
+    /*
 
 1.- Comprueba la existencia del token (existeJWTToken(...)).
 2.- Si existe, lo desencripta y valida (validateToken(...)).
@@ -32,7 +36,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 Para este último punto, se hace uso del objeto GrantedAuthority que se incluyó
 en el token durante el proceso de autenticación.
-	 */
+     */
 
 
     /*
@@ -47,24 +51,48 @@ Firma: contiene header y payload concatenados y encriptados (Header + “.” + 
     private final String SECRET = "mySecretKey";
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        try {
-            if (checkJWTToken(request, response)) {
-                Claims claims = validateToken(request);
-                if (claims.get("authorities") != null) {
-                    setUpSpringAuthentication(claims);
-                } else {
-                    SecurityContextHolder.clearContext();
-                }
-            } else {
-                SecurityContextHolder.clearContext();
-            }
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
+
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (header == null || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException e) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
             return;
         }
+
+        String token = header.replace("Bearer ", "");
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey("mySecretKey".getBytes())
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            String username = claims.getSubject();
+            List<GrantedAuthority> authorities;
+
+            Object rawAuthorities = claims.get("authorities");
+
+            if (rawAuthorities instanceof List<?>) {
+                List<?> roles = (List<?>) rawAuthorities;
+                if (!roles.isEmpty() && roles.get(0) instanceof String) {
+                    authorities = roles.stream()
+                            .map(role -> new SimpleGrantedAuthority((String) role))
+                            .collect(Collectors.toList());
+                } else {
+                    authorities = roles.stream()
+                            .map(role -> new SimpleGrantedAuthority(((Map<?, ?>) role).get("authority").toString()))
+                            .collect(Collectors.toList());
+                }
+            } else {
+                authorities = List.of(); // vacío, por si acaso
+            }
+            Authentication auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        } catch (Exception e) {
+            SecurityContextHolder.clearContext();
+        }
+
+        chain.doFilter(request, response);
     }
 
     private Claims validateToken(HttpServletRequest request) {

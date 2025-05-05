@@ -122,23 +122,6 @@ public class UsuarioService {
 
 
     public LibrosUsuarios insertarLibro(int idUsuario, int idLibro) {
-        /*List<LibrosUsuarios> todosLibrosUsuarios = librosUsuariosRepository.findAll();
-
-        if (todosLibrosUsuarios.stream()
-                .anyMatch(librosUsuarios ->
-                        librosUsuarios.getUsuario().getId() == usuario.getId()
-                                && librosUsuarios.getLibro().getId() == libro.getId())) {
-            return null;
-        }
-
-        LibrosUsuarios librosUsuarios = new LibrosUsuarios();
-        librosUsuarios.setUsuario(usuario);
-        librosUsuarios.setLibro(libro);
-        librosUsuarios.setEstado(Estado.SIN_EMPEZAR);
-        librosUsuarios.setFechaInicio(LocalDate.now());
-        System.out.println(librosUsuarios);
-        return librosUsuariosRepository.save(librosUsuarios);*/
-
         Usuario usuario = usuarioRepository.getById(idUsuario);
         Libro libro = libroRepository.getById(idLibro);
 
@@ -183,23 +166,4 @@ public class UsuarioService {
             return 4;
         }
     }
-        /*if (buscarXID(idUsuario).isPresent()) {
-            if (libroRepository.existsById(idLibro)) {
-                LibrosUsuarios existeLibro = librosUsuariosRepository.findAll()
-                        .stream()
-                        .filter(librosUsuarios -> librosUsuarios.getUsuario().getId() == idUsuario &&
-                                librosUsuarios.getLibro().getId() == idLibro)
-                        .findFirst().orElse(null);
-                if (existeLibro != null) {
-                    librosUsuariosRepository.deleteById(existeLibro.getId());
-                    return 1;
-
-
-            } else {
-                return 2;
-            }
-        } else {
-            return 3;
-        }*/
-
 }

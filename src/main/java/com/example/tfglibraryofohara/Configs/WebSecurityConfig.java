@@ -45,30 +45,6 @@ public class WebSecurityConfig {
                         .antMatchers(HttpMethod.GET, "/api/usuario/login").permitAll()
                         .antMatchers(HttpMethod.POST, "/api/usuario/token").permitAll()
                         .antMatchers(HttpMethod.POST, "/api/usuario/registrar").permitAll()
-                        /* .antMatchers(HttpMethod.POST, "/user").permitAll()
-
-                         .antMatchers(HttpMethod.GET,"/api/autor/").permitAll()
-                         .antMatchers(HttpMethod.GET,"/api/autor/**").permitAll()
-                         .antMatchers(HttpMethod.POST,"/api/autor/registrar").permitAll()
-
-                         .antMatchers(HttpMethod.GET,"/api/genero/").permitAll()
-                         .antMatchers(HttpMethod.GET,"/api/genero/**").permitAll()
-                         .antMatchers(HttpMethod.POST,"/api/genero/registrar").permitAll()
-
-                         .antMatchers(HttpMethod.GET,"/api/libro/").permitAll()
-                         .antMatchers(HttpMethod.GET,"/api/libro/**").permitAll()
-                         .antMatchers(HttpMethod.POST,"/api/libro/registrar").permitAll()
-
-                         .antMatchers(HttpMethod.GET,"/api/usuario/").permitAll()
-                         .antMatchers(HttpMethod.POST,"/api/usuario/token").permitAll()
-                         .antMatchers(HttpMethod.POST,"/api/usuario/registrar").permitAll()
-                         .antMatchers(HttpMethod.PUT,"/api/usuario/{idUsuario}/modificar").permitAll()
-
-                         .antMatchers(HttpMethod.POST,"/api/usuario/{idUsuario}/registrarLibro/{idLibro}").permitAll()
-                         .antMatchers(HttpMethod.PUT,"/api/usuario/{idUsuario}/modificarEstadoLibro").permitAll()
-                         .antMatchers(HttpMethod.DELETE,"/api/usuario/{idUsuario}/eliminarLibro/{idLibro}").permitAll()
-
-                         .antMatchers(HttpMethod.GET,"/api/usuario/login").permitAll()*/
 
                         .antMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()

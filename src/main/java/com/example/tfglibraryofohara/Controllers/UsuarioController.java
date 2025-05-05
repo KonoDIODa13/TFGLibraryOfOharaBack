@@ -277,7 +277,7 @@ public class UsuarioController {
                 .claim("authorities", List.of("ROLE_USER"))
                 .signWith(SignatureAlgorithm.HS512, "mySecretKey".getBytes())
                 .compact();
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, token).body(usuario);
+        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).body(usuario);
     }
 
 
