@@ -122,16 +122,17 @@ public class LibroService {
         boolean modificado = false;
         Autor autor = comprobarAutor(libroDTO.getIdAutor());
         Genero genero = comprobarGenero(libroDTO.getIdGenero());
-        if (!libro.getTitulo().equalsIgnoreCase(libroDTO.getTitulo()) && autor != null && genero != null) {
+        //if (!libro.getTitulo().equalsIgnoreCase(libroDTO.getTitulo()) && autor != null && genero != null) {
             libro.setTitulo(libroDTO.getTitulo());
             libro.setSinopsis(libroDTO.getSinopsis());
             libro.setFechaPublicacion(libroDTO.getFechaPublicacion());
             libro.setPortada(libroDTO.getPortada());
             libro.setAutor(autor);
             libro.setGenero(genero);
+            save(libro);
             modificado = true;
-        }
-        return modificado;
+        return true;
+        //return modificado;
     }
 
     public boolean eliminar(Libro libro) {

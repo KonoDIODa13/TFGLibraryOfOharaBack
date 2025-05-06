@@ -43,7 +43,6 @@ public class WebSecurityConfig {
                 .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authz -> authz
                         .antMatchers(HttpMethod.GET, "/api/usuario/login").permitAll()
-                        .antMatchers(HttpMethod.POST, "/api/usuario/token").permitAll()
                         .antMatchers(HttpMethod.POST, "/api/usuario/registrar").permitAll()
 
                         .antMatchers(AUTH_WHITELIST).permitAll()

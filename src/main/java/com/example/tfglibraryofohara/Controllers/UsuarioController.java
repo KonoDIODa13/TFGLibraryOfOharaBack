@@ -83,9 +83,11 @@ public class UsuarioController {
     })
     public ResponseEntity<?> registrar(@RequestBody UsuarioDTO usuarioDTO) {
         Usuario usuario = usuarioService.insertar(usuarioDTO);
-        return usuario != null ?
-                new ResponseEntity<>(usuario, HttpStatus.OK) :
-                new ResponseEntity<>("Dicho Usuario ya existe en la bd.", HttpStatus.CONFLICT);
+        if (usuario != null) {
+            String token = generarToken(usuario);
+            return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).body(usuario);
+        } else
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Dicho Usuario ya existe en la bd.");
     }
 
     @PutMapping("/{idUsuario}/modificar")
@@ -265,21 +267,12 @@ public class UsuarioController {
     })
     public ResponseEntity<?> login(LoginDTO loginDTO) {
         Usuario usuario = usuarioService.login(loginDTO.getNombreUsuario(), loginDTO.getContrasenna());
-        return usuario != null ?
-                new ResponseEntity<>(usuario, HttpStatus.OK) :
-                new ResponseEntity<>("Login de usuario incorrecto.", HttpStatus.CONFLICT);
+        if (usuario != null) {
+            String token = generarToken(usuario);
+            return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).body(usuario);
+        } else
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Login de usuario incorrecto");
     }
-
-    @PostMapping("/token")
-    public ResponseEntity<?> token(@RequestBody Usuario usuario) {
-        String token = Jwts.builder()
-                .setSubject(usuario.getNombre())
-                .claim("authorities", List.of("ROLE_USER"))
-                .signWith(SignatureAlgorithm.HS512, "mySecretKey".getBytes())
-                .compact();
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).body(usuario);
-    }
-
 
     @GetMapping("/{idUsuario}/libros")
     @Operation(summary = "mostrar los libros de dicho Usuario.")
@@ -291,6 +284,14 @@ public class UsuarioController {
 
     public Usuario getByID(int idUsuario) {
         return usuarioService.buscarXID(idUsuario).orElse(null);
+    }
+
+    public String generarToken(Usuario usuario) {
+        return Jwts.builder()
+                .setSubject(usuario.getNombre())
+                .claim("authorities", List.of("ROLE_USER"))
+                .signWith(SignatureAlgorithm.HS512, "mySecretKey".getBytes())
+                .compact();
     }
 
 }
