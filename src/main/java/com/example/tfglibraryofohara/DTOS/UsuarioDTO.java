@@ -1,7 +1,6 @@
 package com.example.tfglibraryofohara.DTOS;
 
 import com.example.tfglibraryofohara.Entities.Usuario;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -9,7 +8,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 @Data
 @NoArgsConstructor
-
 public final class UsuarioDTO {
     private String nombre;
     private String apellidos;
@@ -23,7 +21,7 @@ public final class UsuarioDTO {
         usuario.setApellidos(getApellidos());
         usuario.setGmail(getGmail());
         usuario.setContrasenna(DigestUtils.sha256Hex(getContrasenna()));
-        usuario.setRol("USER");
+        usuario.setRol(getRol());
         return usuario;
     }
 

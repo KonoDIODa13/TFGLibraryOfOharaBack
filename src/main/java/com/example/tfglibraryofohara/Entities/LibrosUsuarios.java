@@ -49,7 +49,7 @@ public class LibrosUsuarios {
     @Column(name = "fecha_inicio")
     private LocalDate fechaInicio = LocalDate.now();
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated()
     @Column(name = "estado")
     private Estado estado = Estado.SIN_EMPEZAR;
 }

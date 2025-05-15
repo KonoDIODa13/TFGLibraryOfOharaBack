@@ -10,8 +10,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -120,11 +118,12 @@ public class UsuarioService {
         return listarLibros().stream().filter(librosUsuarios -> librosUsuarios.getUsuario().getId() == idUsuario).toList();
     }
 
-
     public LibrosUsuarios insertarLibro(int idUsuario, int idLibro) {
         Usuario usuario = usuarioRepository.getById(idUsuario);
         Libro libro = libroRepository.getById(idLibro);
-
+        if (comprobarSiExisteLibroEnLista(idUsuario, idLibro)) {
+            return null;
+        }
         LibrosUsuarios librosUsuarios = new LibrosUsuarios();
         librosUsuarios.setUsuario(usuario);
         librosUsuarios.setLibro(libro);
@@ -134,7 +133,7 @@ public class UsuarioService {
     }
 
 
-    public int modificarEstado(LibrosUsuarios librosUsuarios) {
+    public int modificarLibroUsuario(LibrosUsuarios librosUsuarios) {
         if (buscarXID(librosUsuarios.getUsuario().getId()).isEmpty()) {
             return 3;
         }
@@ -147,13 +146,18 @@ public class UsuarioService {
         return 1;
     }
 
+    public LibrosUsuarios modificarEstadoLibro(LibrosUsuarios librosUsuarios, Estado nuevoEstado) {
+        librosUsuarios.setEstado(nuevoEstado);
+        return librosUsuariosRepository.save(librosUsuarios);
+    }
+
+
     @Transactional
     public Integer eliminarLibro(int idUsuario, int idLibro) {
         if (buscarXID(idUsuario).isPresent()) {
             if (libroRepository.existsById(idLibro)) {
                 Optional<LibrosUsuarios> existeLibroOpt = librosUsuariosRepository.findByUsuario_IdAndLibro_Id(idUsuario, idLibro);
                 if (existeLibroOpt.isPresent()) {
-                    System.out.println(existeLibroOpt.get());
                     librosUsuariosRepository.deleteById(existeLibroOpt.get().getId());
                     return 1;
                 } else {
@@ -165,5 +169,15 @@ public class UsuarioService {
         } else {
             return 4;
         }
+    }
+
+    public LibrosUsuarios getLibroUsuario(int idUsuario, int idLibro) {
+        return librosUsuariosRepository.findByUsuario_IdAndLibro_Id(idUsuario, idLibro).orElse(null);
+    }
+
+    public boolean comprobarSiExisteLibroEnLista(int idUsuario, int idLibro) {
+        return getLibrosByUsuario(idUsuario).stream()
+                .anyMatch(librosUsuarios -> librosUsuarios.getUsuario().getId() == idUsuario &&
+                        librosUsuarios.getLibro().getId() == idLibro);
     }
 }

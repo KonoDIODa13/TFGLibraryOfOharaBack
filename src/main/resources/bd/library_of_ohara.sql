@@ -70,8 +70,8 @@ CREATE TABLE Libro
 CREATE TABLE Libros_Usuarios
 (
     id           INT NOT NULL AUTO_INCREMENT,
-    id_usuario    INT NOT NULL,
-    id_libro      INT NOT NULL,
+    id_usuario   INT NOT NULL,
+    id_libro     INT NOT NULL,
     fecha_inicio DATE        DEFAULT NULL,
     estado       VARCHAR(20) DEFAULT "sin empezar",
     PRIMARY KEY (id),

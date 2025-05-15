@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GeneroServicio {
+public class GeneroService {
     @Autowired
     private GeneroRepository generoRepository;
 
@@ -35,6 +35,7 @@ public class GeneroServicio {
         boolean modificado = false;
         if (!genero.getGenero().equalsIgnoreCase(generoDTO.getGenero())) {
             genero.setGenero(generoDTO.getGenero());
+            save(genero);
             modificado = true;
         }
         return modificado;

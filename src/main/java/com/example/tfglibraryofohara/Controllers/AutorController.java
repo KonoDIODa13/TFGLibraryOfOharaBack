@@ -3,7 +3,7 @@ package com.example.tfglibraryofohara.Controllers;
 import com.example.tfglibraryofohara.DTOS.AutorDTO;
 import com.example.tfglibraryofohara.Entities.Autor;
 import com.example.tfglibraryofohara.Entities.Libro;
-import com.example.tfglibraryofohara.Services.AutorServicio;
+import com.example.tfglibraryofohara.Services.AutorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,7 +24,7 @@ import java.util.Optional;
 @Tag(name = "Autores", description = "Controlador para todas las acciones de autores.")
 public class AutorController {
     @Autowired
-    private AutorServicio autorServicio;
+    private AutorService autorService;
 
     @GetMapping("/todos")
     @Operation(summary = "Listar todos los Autores (si hay).")
@@ -38,7 +38,7 @@ public class AutorController {
                     content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<?> listarTodos() {
-        List<Autor> autores = autorServicio.listarTodos();
+        List<Autor> autores = autorService.listarTodos();
         return !autores.isEmpty() ?
                 new ResponseEntity<>(autores, HttpStatus.OK) : // 200
                 new ResponseEntity<>("No hay autores en la bd", HttpStatus.NOT_FOUND);//204
@@ -57,8 +57,8 @@ public class AutorController {
                     content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<?> buscarXID(@PathVariable int idAutor) {
-        return autorServicio.buscarXID(idAutor).isPresent() ?
-                new ResponseEntity<>(autorServicio.buscarXID(idAutor).get(), HttpStatus.OK) :
+        return autorService.buscarXID(idAutor).isPresent() ?
+                new ResponseEntity<>(autorService.buscarXID(idAutor).get(), HttpStatus.OK) :
                 new ResponseEntity<>("No existe un Autor con dicho ID.", HttpStatus.NOT_FOUND);
     }
 
@@ -79,7 +79,7 @@ public class AutorController {
             )
     })
     public ResponseEntity<?> mostrarLibrosAutorXID(@PathVariable int idAutor) {
-        Optional<Autor> optAutor = autorServicio.buscarXID(idAutor);
+        Optional<Autor> optAutor = autorService.buscarXID(idAutor);
         if (optAutor.isPresent()) {
             Autor autor = optAutor.get();
             return autor.getLibros().size() != 0 ?
@@ -102,7 +102,7 @@ public class AutorController {
                     content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<?> registrar(@RequestBody AutorDTO autorDTO) {
-        Autor autor = autorServicio.insertar(autorDTO);
+        Autor autor = autorService.insertar(autorDTO);
         return autor != null ?
                 new ResponseEntity<>(autor, HttpStatus.OK) :
                 new ResponseEntity<>("Dicho Autor ya existe en la bd.", HttpStatus.CONFLICT);
@@ -125,10 +125,10 @@ public class AutorController {
             )
     })
     public ResponseEntity<?> modificar(@PathVariable int idAutor, @RequestBody AutorDTO autorDTO) {
-        Optional<Autor> optAutor = autorServicio.buscarXID(idAutor);
+        Optional<Autor> optAutor = autorService.buscarXID(idAutor);
         if (optAutor.isPresent()) {
             Autor autor = optAutor.get();
-            return autorServicio.modificar(autor, autorDTO) ?
+            return autorService.modificar(autor, autorDTO) ?
                     new ResponseEntity<>(autor, HttpStatus.OK) :
                     new ResponseEntity<>("Dicho Autor no se ha modificado.", HttpStatus.NOT_MODIFIED);//304
         } else {
@@ -153,10 +153,10 @@ public class AutorController {
             )
     })
     public ResponseEntity<?> eliminar(@PathVariable int idAutor) {
-        Optional<Autor> optAutor = autorServicio.buscarXID(idAutor);
+        Optional<Autor> optAutor = autorService.buscarXID(idAutor);
         if (optAutor.isPresent()) {
             Autor autor = optAutor.get();
-            return autorServicio.eliminar(autor) ?
+            return autorService.eliminar(autor) ?
                     new ResponseEntity<>("Autor eliminado con exito.", HttpStatus.OK) :
                     new ResponseEntity<>("Dicho Autor no se ha eliminado.", HttpStatus.CONFLICT);//304
         } else {

@@ -4,7 +4,7 @@ package com.example.tfglibraryofohara.Controllers;
 import com.example.tfglibraryofohara.DTOS.GeneroDTO;
 import com.example.tfglibraryofohara.Entities.Genero;
 import com.example.tfglibraryofohara.Entities.Libro;
-import com.example.tfglibraryofohara.Services.GeneroServicio;
+import com.example.tfglibraryofohara.Services.GeneroService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,7 +24,7 @@ import java.util.Optional;
 @Tag(name = "Géneros", description = "Controlador para todas las acciones de Géneros.")
 public class GeneroController {
     @Autowired
-    private GeneroServicio generoServicio;
+    private GeneroService generoServicio;
 
     @GetMapping("/todos")
     @Operation(summary = "Listar todos los Géneros (si hay).")
