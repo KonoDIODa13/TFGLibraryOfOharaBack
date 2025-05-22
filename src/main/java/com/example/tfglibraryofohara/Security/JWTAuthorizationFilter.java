@@ -91,7 +91,6 @@ Firma: contiene header y payload concatenados y encriptados (Header + “.” + 
         } catch (Exception e) {
             SecurityContextHolder.clearContext();
         }
-
         chain.doFilter(request, response);
     }
 

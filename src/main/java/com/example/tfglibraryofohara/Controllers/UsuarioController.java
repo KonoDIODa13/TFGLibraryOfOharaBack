@@ -179,7 +179,7 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/{idUsuario}/modificarEstadoLibro")
+    @PutMapping("/{idUsuario}/modificarLibro")
     @Operation(summary = "Modificará el Estado del Libro.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
@@ -308,7 +308,7 @@ public class UsuarioController {
         LibrosUsuarios librosUsuarios = usuarioService.listarLibros().stream().filter(libroUsuario -> libroUsuario.getId() == idLibroUsuario).findFirst().orElse(null);
         return librosUsuarios != null ?
                 ResponseEntity.ok(usuarioService.modificarEstadoLibro(librosUsuarios, estado)) :
-                ResponseEntity.notFound().build();
+                new ResponseEntity<>("Error al modificar el estado",HttpStatus.NOT_FOUND);
     }
 
     public Usuario getByID(int idUsuario) {

@@ -25,13 +25,16 @@ public class LibroDTO {
         libro.setSinopsis(sinopsis);
         libro.setFechaPublicacion(fechaPublicacion);
         libro.setPortada(portada);
-        /*libro.setAutor(autorDTO.DTOtoModel());
-        libro.setGenero(generoDTO.DTOtoModel());*/
         return libro;
     }
 
     public LibroDTO modeltoDTO(Libro libro) {
-        return new LibroDTO(libro.getTitulo(), libro.getSinopsis(), libro.getFechaPublicacion(), libro.getPortada(), libro.getAutor().getId(), libro.getGenero().getId());
-
+        return new LibroDTO(libro.getTitulo(),
+                libro.getSinopsis(),
+                libro.getFechaPublicacion(),
+                libro.getPortada(),
+                libro.getAutor().getId(),
+                libro.getGenero().getId()
+        );
     }
 }
